@@ -39,14 +39,14 @@ def decryption(ciphertext,key) :
 value=int(input("1-Encryption? \n2-Decryption? \n"))
 if value==1:
             plaintext= input("Enter the plaintext: \n")
-            key= int(input("Enter the key: \n"))
+            key= input("Enter the key: \n")
             print ("Plaintext:",plaintext)
             print ("Key:",key)
             print ("Ciphertext:",encryption(plaintext,key)),
     
 elif value==2:    
             ciphertext= input("Enter the ciphertext: \n")
-            key= int(input("Enter the key: \n"))
+            key= input("Enter the key: \n")
             print ("Ciphertext:",ciphertext)
             print ("Key:",key)
             print ("Plaintext:",decryption(ciphertext,key)),
