@@ -6,7 +6,6 @@ import numpy as np
 from scipy import linalg
 
 
-
 key_array = [[0] * 2 for i in range(2)]
 key_inverse_array = [[0] * 2 for i in range(2)]
 plaintext_converter = [[0] for i in range(2)]
@@ -14,6 +13,7 @@ cipher_array = [[0] for i in range(2)]
 ciphertext_converter  = [[0] for i in range(2)]
 plain_array = [[0] for i in range(2)]
 
+#Text -> matrix
 def key_converter(key):
     k = 0
     for i in range(2):
@@ -21,7 +21,7 @@ def key_converter(key):
             key_array[i][j] = ord(key[k]) % 65
             k += 1
 
-
+#To find inverse of matrix
 def greatest_common_divisor(a, b):
     x,y, u,v = 0,1, 1,0
     while a != 0:
@@ -45,17 +45,13 @@ def key_inverse(key):
     x=greatest_common_divisor(determinant, 26)
     if x==1:
         inverse_determinant=a_inverse_in_mod_m(determinant, 26)
-        key_inverse_array[0][0] = inverse_determinant*ord(key[3]) % 65
-        key_inverse_array[1][1] = inverse_determinant*ord(key[0]) % 65
-        key_inverse_array[0][1] = inverse_determinant*(-1*ord(key[1])) % 65
-        key_inverse_array[1][0] = inverse_determinant*(-1*ord(key[2])) % 65    
+        key_inverse_array[0][0] = (inverse_determinant*ord(key[3])) % 65
+        key_inverse_array[1][1] = (inverse_determinant*ord(key[0])) % 65
+        key_inverse_array[0][1] = (inverse_determinant*(-1*ord(key[1]))) % 65
+        key_inverse_array[1][0] = (inverse_determinant*(-1*ord(key[2]))) % 65    
         
     else:
         print("Key is not invertible in mod 26. Please Try Again!")
-
-         
-
-
 
 
 
@@ -64,18 +60,18 @@ def encryption(plaintext_converter):
         for j in range(1):
             cipher_array[i][j] = 0
             for x in range(2):
-                plain_array[i][j] += (key_array[i][x] * 
-                                       ciphertext_converter[x][j])
-            plain_array[i][j] = plain_array[i][j] % 26
+                cipher_array[i][j] += (key_array[i][x] * 
+                                       plaintext_converter[x][j])
+            cipher_array[i][j] =  cipher_array[i][j] % 26
             
 def decryption(ciphertext_converter):
     for i in range(2):
         for j in range(1):
             plain_array[i][j] = 0
             for x in range(2):
-                cipher_array[i][j] += (key_inverse_array[i][x] * 
-                                       plaintext_converter[x][j])
-            cipher_array[i][j] = cipher_array[i][j] % 26
+                plain_array[i][j] += (key_inverse_array[i][x] * 
+                                       ciphertext_converter[x][j])
+            plain_array[i][j] = plain_array[i][j] % 26
   
 def HillCipher_encryption(plaintext, key):
     key_converter(key)
@@ -90,7 +86,7 @@ def HillCipher_encryption(plaintext, key):
     
     
 def HillCipher_decryption(ciphertext, key):
-    key_converter(key)
+    key_inverse(key)
     for i in range(2):
         ciphertext_converter[i][0] = ord(ciphertext[i]) % 65
     decryption(ciphertext_converter)
@@ -103,6 +99,8 @@ def HillCipher_decryption(ciphertext, key):
 
 def main():
 
+    #plaintext = "AC"
+    #key = "GYBN"
 
         value=int(input("1-Encryption? \n2-Decryption? \n"))
         if value==1:
@@ -120,4 +118,4 @@ def main():
             HillCipher_decryption(ciphertext, key),
         else:   
             print("Invalid value!")
-
+ 
